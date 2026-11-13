@@ -1,0 +1,74 @@
+import java.util.Scanner;
+
+// Custom exception
+class InvalidCredentialsException extends Exception {
+    InvalidCredentialsException(String message) {
+        super(message);
+    }
+}
+
+// Login system class
+class LoginSystem {
+
+    // Username and password validation
+    void login(String username, String password)
+            throws InvalidCredentialsException {
+
+        // Check for null values
+        if (username == null || password == null) {
+            throw new NullPointerException(
+                "Username or password cannot be null."
+            );
+        }
+
+        // Check for empty values
+        if (username.isEmpty() || password.isEmpty()) {
+            throw new InvalidCredentialsException(
+                "Username or password cannot be empty."
+            );
+        }
+
+        // Validate username and password
+        if (!username.equals("admin") ||
+            !password.equals("1234")) {
+
+            throw new InvalidCredentialsException(
+                "Invalid username or password."
+            );
+        }
+
+        System.out.println("Login successful!");
+    }
+}
+
+// Main class
+public class Main {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        LoginSystem loginSystem = new LoginSystem();
+
+        try {
+            System.out.print("Enter username: ");
+            String username = sc.nextLine();
+
+            System.out.print("Enter password: ");
+            String password = sc.nextLine();
+
+            loginSystem.login(username, password);
+
+        } catch (InvalidCredentialsException e) {
+            System.out.println("Login Error: " + e.getMessage());
+
+        } catch (NullPointerException e) {
+            System.out.println("Null Error: " + e.getMessage());
+
+        } catch (Exception e) {
+            System.err.println("Unexpected error: " + e.getMessage());
+            e.printStackTrace(); // Log details for debugging
+
+        } finally {
+            sc.close();
+            System.out.println("Login process completed.");
+        }
+    }
+}
